@@ -1,0 +1,87 @@
+/* overlay-levelup.css — 레벨업 화면(#levelup-overlay): 업그레이드 카드, 선택 UI */
+
+.levelup-panel {
+  max-width: 920px;
+}
+
+.levelup-title {
+  font-size: 2.2rem;
+  color: #4ecca3;
+  margin-bottom: 4px;
+  animation: levelupPop 0.5s ease;
+}
+
+@keyframes levelupPop {
+  0% { transform: scale(0.8); opacity: 0; }
+  60% { transform: scale(1.05); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+#levelup-level-text {
+  font-size: 1.2rem;
+  color: #00d9ff;
+  margin-bottom: 20px;
+}
+
+.upgrade-cards {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+  pointer-events: auto;
+}
+
+.upgrade-card {
+  flex: 1;
+  min-width: 190px;
+  max-width: 250px;
+  padding: 18px 14px;
+  background: rgba(30, 30, 55, 0.95);
+  border: 2px solid rgba(78, 204, 163, 0.35);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+  text-align: left;
+  color: #eee;
+  box-shadow: none;
+}
+
+.upgrade-card:hover {
+  transform: translateY(-4px);
+  border-color: #4ecca3;
+  box-shadow: 0 8px 24px rgba(78, 204, 163, 0.2);
+  filter: none;
+}
+
+.upgrade-card .card-key {
+  display: inline-block;
+  width: 26px;
+  height: 26px;
+  line-height: 26px;
+  text-align: center;
+  background: #4ecca3;
+  color: #1a1a2e;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+}
+
+.upgrade-card .card-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ffe66d;
+  margin-bottom: 6px;
+}
+
+.upgrade-card .card-desc {
+  font-size: 0.85rem;
+  color: #999;
+  line-height: 1.4;
+}
+
+.levelup-hint {
+  margin-top: 20px !important;
+  font-size: 0.85rem !important;
+  color: #666 !important;
+}

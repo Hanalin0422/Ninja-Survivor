@@ -1,0 +1,100 @@
+/* hud.css — 좌상단 HUD: HP/XP 바, 레벨, 생존 시간, 처치 수 */
+
+#hud {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  pointer-events: none;
+}
+
+.hud-panel {
+  background: rgba(15, 15, 26, 0.75);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(78, 204, 163, 0.25);
+  border-radius: 10px;
+  padding: 10px 14px;
+  min-width: 280px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.hud-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.hud-row:last-of-type {
+  margin-bottom: 0;
+}
+
+.hud-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #4ecca3;
+  min-width: 24px;
+  letter-spacing: 0.05em;
+}
+
+.bar-track {
+  flex: 1;
+  height: 16px;
+  background: rgba(0, 0, 0, 0.45);
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.bar-fill {
+  height: 100%;
+  transition: width 0.12s ease-out;
+  border-radius: 3px;
+}
+
+.hp-fill {
+  width: 100%;
+  background: linear-gradient(90deg, #c73e54, #ff6b6b);
+  box-shadow: 0 0 8px rgba(233, 69, 96, 0.4);
+}
+
+.xp-fill {
+  width: 0%;
+  background: linear-gradient(90deg, #0096c7, #00d9ff);
+  box-shadow: 0 0 8px rgba(0, 217, 255, 0.35);
+}
+
+.level-num {
+  font-size: 14px;
+  font-weight: 800;
+  color: #00d9ff;
+  min-width: 20px;
+}
+
+.xp-track {
+  max-width: 180px;
+}
+
+.hud-value {
+  font-size: 12px;
+  color: #999;
+  min-width: 68px;
+  text-align: right;
+}
+
+.hud-stats {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  gap: 16px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+#time-display {
+  color: #ffe66d;
+}
+
+#kill-display {
+  color: #00d9ff;
+}

@@ -289,3 +289,101 @@ MENU → PLAYING ⇄ LEVEL_UP (일시정지)
 - 새 파일 생성 전 기존 섹션 주석(// --- X ---) 기준으로 옮길 것
 - 작업 후 변경 파일 목록 + 다음 단계 제안만 짧게
 - 막히면 억지로 진행하지 말고 막힌 지점 보고
+
+---
+
+## 18. 리팩터링 — 모듈·CSS 분할 계획
+
+### 목표·제약
+
+| 항목 | 내용 |
+|------|------|
+| 목표 | `game.js`(~1547줄), `style.css`(~503줄) 기능별 분할 |
+| 금지 | 게임 동작·밸런스·UI 텍스트 변경 |
+| 모듈 | ES module (`type="module"`) |
+| 상태 | 가변 공유 상태는 `js/core/state.js` **단일** |
+| 빌드 | 없음 — `index.html`의 `<script type="module">` **1개**만 (`js/main.js`) |
+| 속도 | 구현 시 **한 번에 새 파일 1~2개**만 생성·이전 |
+
+### JS 목표 구조
+
+```
+js/
+├── main.js                 # 진입점: DOM 로드, 에셋 로드, 루프, 이벤트 연결
+├── core/
+│   ├── state.js            # state, player, enemies, projectiles, pickups, camera, keys …
+│   └── constants.js        # CANVAS_W/H, COLORS, GameState, PASSIVE_DEFS, 스프라이트 설정
+├── utils/
+│   └── math.js             # dist, normalize, circleOverlap, shuffle, worldToScreen …
+├── assets/
+│   └── loaders.js          # loadPlayerSprite, loadArrow … loadShuriken
+├── systems/
+│   ├── input.js            # clearKeys, keydown/keyup
+│   ├── audio.js            # Web Audio 효과음
+│   ├── particles.js        # spawn/update/draw particles
+│   ├── difficulty.js       # getDifficulty, getBestRecord
+│   ├── camera.js           # updateCamera
+│   └── spawn.js            # updateSpawning, spawnEnemy
+├── entities/
+│   ├── player.js           # createPlayer, updatePlayer, drawPlayer
+│   ├── enemy.js            # createEnemy, update/damage/kill, drawSlimeEnemy
+│   ├── pickup.js           # createPickup, updatePickups, addXp
+│   └── projectile.js       # updateProjectiles, drawMagicArrowProjectile
+├── weapons/
+│   ├── magicArrow.js
+│   ├── scythe.js
+│   ├── lightning.js
+│   └── index.js            # WEAPON_FACTORIES, WEAPON_NAMES
+├── upgrades.js               # buildUpgradePool, showLevelUp, selectUpgrade …
+├── render/
+│   ├── background.js       # drawBackground
+│   ├── world.js            # drawPickups, drawEnemies, drawProjectiles, drawWeapons …
+│   └── minimap.js          # drawMinimap
+├── hud.js                    # updateHud, renderUpgradeCards
+└── gameflow.js               # startGame, pause/resume, endGame, update, gameLoop, render
+```
+
+`state.js`에 둘 것: `state`, `player`, `enemies`, `projectiles`, `pickups`, `particles`, `lightningFlashes`, `camera`, `keys`, `survivalTime`, `killCount`, `spawnTimer`, `lastTime`, `currentUpgrades`, `soundEnabled`, `audioCtx`, DOM 참조는 `main.js`에서 `state`에 주입하거나 getter로 접근.
+
+### CSS 목표 구조
+
+```
+css/
+├── base.css          # reset, body, #game-container, #game-canvas, .hidden, button, kbd
+├── hud.css           # #hud, .hud-panel, 바, .hud-stats
+├── minimap.css       # #minimap-wrap, #hud-controls, #pause-btn, #sound-btn
+└── overlays.css      # menu/pause/levelup/gameover, .overlay-panel, .stat-grid, .upgrade-card
+```
+
+`index.html`의 `<link>`는 `css/base.css` 등 4개로 교체 (`style.css` 삭제는 마지막 단계).
+
+### 이전 순서 (단계별 1~2파일)
+
+| 단계 | 새 파일 | game.js에서 옮길 섹션 |
+|------|---------|----------------------|
+| 1 | `core/state.js`, `core/constants.js` | 상단 상수·`GameState`·전역 `let` |
+| 2 | `utils/math.js` | `// --- Utils ---` |
+| 3 | `main.js` + `index.html` module 전환 | IIFE 제거, init·루프 골격만 |
+| 4 | `assets/loaders.js` | 스프라이트·배경 로드 |
+| 5 | `systems/input.js`, `systems/audio.js` | Input, Audio |
+| 6 | `systems/particles.js`, `systems/difficulty.js` | Particles, Difficulty |
+| 7 | `entities/enemy.js` | Enemy |
+| 8 | `entities/player.js` | Player |
+| 9 | `entities/pickup.js`, `entities/projectile.js` | Pickups, Projectiles |
+| 10 | `weapons/*.js` | Weapons (3종 + index) |
+| 11 | `upgrades.js` | Upgrades |
+| 12 | `systems/spawn.js`, `systems/camera.js` | Spawn, Camera |
+| 13 | `render/*.js`, `hud.js` | Render, HUD |
+| 14 | `gameflow.js` | Game flow, `update`, `gameLoop`, `render` |
+| 15 | `css/base.css`, `css/hud.css` | style.css 상단·HUD |
+| 16 | `css/minimap.css`, `css/overlays.css` | 나머지 CSS, `style.css` 제거 |
+
+### 완료 기준 (§17 체크리스트와 동일)
+
+- [ ] 메뉴 / 시작 / 이동 / 젬·레벨업 / Esc / 사운드 / 게임오버·재시작
+- [ ] 콘솔 에러 0, `game.js`·`style.css` 삭제 후에도 동작 동일
+
+### 다음 작업
+
+- [x] **단계 1** — `js/core/state.js` + `js/core/constants.js` 생성, `game.js`에서 이전
+- [ ] **단계 2** — `js/utils/math.js` 생성 후 `// --- Utils ---` 이전

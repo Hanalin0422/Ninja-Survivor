@@ -1,0 +1,13 @@
+/* overlay-pause.css — 일시정지 화면(#pause-overlay): 제목, 안내 문구 */
+
+#pause-overlay h2 {
+  font-size: 2rem;
+  color: #ffe66d;
+  margin-bottom: 4px;
+}
+
+.pause-hint {
+  margin-top: 20px !important;
+  font-size: 0.85rem !important;
+  color: #666 !important;
+}

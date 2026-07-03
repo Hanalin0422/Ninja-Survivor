@@ -1,0 +1,59 @@
+/* controls.css — 우측 상단 미니맵, 일시정지·사운드 버튼(#hud-controls) */
+
+#hud-controls {
+  position: absolute;
+  top: 168px;
+  right: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  pointer-events: auto;
+}
+
+#minimap-wrap {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  pointer-events: none;
+}
+
+#minimap-canvas {
+  display: block;
+  width: 140px;
+  height: 140px;
+  background: rgba(15, 15, 26, 0.88);
+  border: 1px solid rgba(78, 204, 163, 0.45);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.minimap-label {
+  display: block;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: #00d9ff;
+  margin-top: 4px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+#pause-btn,
+#sound-btn {
+  padding: 8px 14px;
+  font-size: 14px;
+  background: rgba(42, 42, 74, 0.92);
+  color: #eee;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  backdrop-filter: blur(4px);
+}
+
+#pause-btn:hover,
+#sound-btn:hover {
+  background: rgba(62, 62, 94, 0.95);
+  transform: none;
+}
+
+#sound-btn.muted {
+  opacity: 0.55;
+}

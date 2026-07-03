@@ -1,0 +1,15 @@
+/* overlay-gameover.css — 게임오버 화면(#gameover-overlay): 결과 통계, 재시작 버튼 */
+
+.gameover-panel h2 {
+  font-size: 2.2rem;
+  color: #e94560;
+  margin-bottom: 4px;
+}
+
+#gameover-overlay .stat-value {
+  color: #ff8a9b;
+}
+
+#restart-btn {
+  margin-top: 20px;
+}
